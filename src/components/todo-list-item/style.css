@@ -1,0 +1,8 @@
+.todo-list-item-label {
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.todo-list-item-button {
+  min-width: 30px;
+}

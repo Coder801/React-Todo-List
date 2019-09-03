@@ -1,0 +1,11 @@
+.app-header {
+  align-items: baseline;
+  justify-content: space-between;
+}
+.app-header-title {
+  font-size: 24px;
+}
+.app-header-info {
+  font-size: 16px;
+  color: gray;
+}

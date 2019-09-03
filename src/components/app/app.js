@@ -3,6 +3,9 @@ import React from "react";
 import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
 import TodoList from "../todo-list";
+import ItemStatusFilter from "../item-status-filter";
+
+import "./style.css";
 
 const App = () => {
   const todos = [
@@ -13,8 +16,11 @@ const App = () => {
 
   return (
     <div className="container">
-      <AppHeader />
-      <SearchPanel />
+      <AppHeader todo="1" done="3" />
+      <div className="controls input-group">
+        <SearchPanel />
+        <ItemStatusFilter />
+      </div>
       <TodoList todos={todos} />
     </div>
   );
