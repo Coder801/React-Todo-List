@@ -3,6 +3,15 @@
   display: inline-block;
 }
 
+.todo-list-item-label.done {
+  text-decoration: line-through; 
+}
+
+.todo-list-item-label.important {
+  font-weight: bold;
+  color: skyblue;
+}
+
 .todo-list-item-button {
   min-width: 30px;
 }
