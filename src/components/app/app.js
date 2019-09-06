@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import uuidv4 from "uuid/v4";
 
 import AppHeader from "../app-header";
 import SearchPanel from "../search-panel";
@@ -11,55 +12,43 @@ import "./style.css";
 export default class App extends Component {
   state = {
     todoData: [
-      { label: "Drink Coffee", important: false, done: false, key: 1 },
-      { label: "Create React App", important: true, done: false, key: 2 },
-      { label: "Watch TV", important: false, done: false, key: 3 }
+      this.createTodoItem("Drink Coffee"),
+      this.createTodoItem("Create React App"),
+      this.createTodoItem("Watch TV")
     ]
   };
 
-  onToggleDone = id => {
-    this.setState(({ todoData }) => {
-      const newState = todoData.map(item => {
-        if (item.key === id) {
-          item.done = !item.done;
-          return item;
-        }
-        return item;
-      });
+  createTodoItem(label) {
+    return {
+      important: false,
+      key: uuidv4(),
+      done: false,
+      label
+    };
+  }
 
-      return {
-        todoData: newState
-      };
-    });
+  togglePropperty(array, id, prop) {
+    return array.map(item =>
+      item.key === id ? { ...item, [prop]: !item[prop] } : item
+    );
+  }
+
+  onToggleDone = id => {
+    this.setState(({ todoData }) => ({
+      todoData: this.togglePropperty(todoData, id, "done")
+    }));
   };
 
   onToggleImportant = id => {
-    this.setState(({ todoData }) => {
-      const newState = todoData.map(item => {
-        if (item.key === id) {
-          item.important = !item.important;
-          return item;
-        }
-        return item;
-      });
-
-      return {
-        todoData: newState
-      };
-    });
+    this.setState(({ todoData }) => ({
+      todoData: this.togglePropperty(todoData, id, "important")
+    }));
   };
 
   onItemAdded = label => {
     this.setState(({ todoData }) => {
-      const newItem = {
-        important: false,
-        key: Date.now(),
-        done: false,
-        label
-      };
-
       return {
-        todoData: [...todoData, newItem]
+        todoData: [...todoData, this.createTodoItem(label)]
       };
     });
   };
@@ -73,15 +62,19 @@ export default class App extends Component {
   };
 
   render() {
+    const { todoData } = this.state;
+    const doneCount = todoData.filter(item => item.done).length;
+    const todoCount = todoData.length - doneCount;
+
     return (
       <div className="container">
-        <AppHeader todo={1} done={3} />
+        <AppHeader todo={todoCount} done={doneCount} />
         <div className="controls input-group">
           <SearchPanel />
           <ItemStatusFilter />
         </div>
         <TodoList
-          todos={this.state.todoData}
+          todos={todoData}
           onDeleted={this.onDeleted}
           onToggleDone={this.onToggleDone}
           onToggleImportant={this.onToggleImportant}

@@ -1,22 +1,47 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import "./style.css";
 
-const ItemAddForm = ({ onItemAdded }) => {
-  return (
-    <button
-      type="button"
-      className="item-add-form-btn btn btn-primary btn-lg btn-block"
-      onClick={() => onItemAdded("Some text")}
-    >
-      Add Item
-    </button>
-  );
-};
+export default class ItemAddForm extends Component {
+  state = {
+    label: ""
+  };
+
+  onLabelChange = event => {
+    this.setState({
+      label: event.target.value
+    });
+  };
+
+  onSubmit = event => {
+    event.preventDefault();
+    const { label } = this.state;
+
+    if (label) {
+      this.props.onItemAdded(this.state.label);
+    }
+  };
+
+  render() {
+    return (
+      <form className="input-group item-add-form" onSubmit={this.onSubmit}>
+        <input
+          className="form-control item-add-form-input"
+          value={this.state.label}
+          onChange={this.onLabelChange}
+          placeholder="Add new todo item"
+        />
+        <div className="input-group-append">
+          <button type="submit" className="btn btn-primary">
+            Add Item
+          </button>
+        </div>
+      </form>
+    );
+  }
+}
 
 ItemAddForm.propTypes = {
   onItemAdded: PropTypes.func.isRequired
 };
-
-export default ItemAddForm;
