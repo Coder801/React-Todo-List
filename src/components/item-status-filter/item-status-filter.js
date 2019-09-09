@@ -6,23 +6,17 @@ export default class ItemStatusFilter extends Component {
     buttons: ["All", "Active", "Done"]
   };
 
-  onFilterItems = event => {
-    this.props.onFilterItems(event.target.value);
-  };
-
   render() {
-    const { filter } = this.props;
+    const { filter, onFilterChange } = this.props;
 
     const buttons = this.state.buttons.map((button, key) => {
+      const label = button.toLowerCase();
       let buttonClass =
-        button.toLowerCase() === filter
-          ? "btn-primary"
-          : "btn-outline-secondary";
+        label === filter ? "btn-primary" : "btn-outline-secondary";
 
       return (
         <button
-          value={button.toLowerCase()}
-          onClick={this.onFilterItems}
+          onClick={() => onFilterChange(label)}
           className={`btn ${buttonClass}`}
           type="button"
           key={key}
@@ -38,5 +32,5 @@ export default class ItemStatusFilter extends Component {
 
 ItemStatusFilter.propTypes = {
   filter: PropTypes.string.isRequired,
-  onFilterItems: PropTypes.func.isRequired
+  onFilterChange: PropTypes.func.isRequired
 };

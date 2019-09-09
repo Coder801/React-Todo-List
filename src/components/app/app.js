@@ -67,7 +67,7 @@ export default class App extends Component {
     this.setState({ term });
   };
 
-  onFilterItems = filter => {
+  onFilterChange = filter => {
     this.setState({ filter });
   };
 
@@ -100,7 +100,7 @@ export default class App extends Component {
           <SearchPanel onSearchChange={this.onSearchChange} />
           <ItemStatusFilter
             filter={filter}
-            onFilterItems={this.onFilterItems}
+            onFilterChange={this.onFilterChange}
           />
         </div>
         <TodoList
