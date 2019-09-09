@@ -15,7 +15,9 @@ export default class App extends Component {
       this.createTodoItem("Drink Coffee"),
       this.createTodoItem("Create React App"),
       this.createTodoItem("Watch TV")
-    ]
+    ],
+    term: "",
+    filter: "all"
   };
 
   createTodoItem(label) {
@@ -61,20 +63,48 @@ export default class App extends Component {
     });
   };
 
+  onSearchChange = term => {
+    this.setState({ term });
+  };
+
+  onFilterItems = filter => {
+    this.setState({ filter });
+  };
+
+  search = (items, term) => {
+    const pattern = new RegExp(term || ".*", "i");
+
+    return items.filter(item => pattern.test(item.label));
+  };
+
+  filter = (items, filter = "all") => {
+    if (filter === "all") {
+      return items;
+    }
+
+    return items.filter(item => (filter === "done" ? item.done : !item.done));
+  };
+
   render() {
-    const { todoData } = this.state;
+    const { todoData, term, filter } = this.state;
     const doneCount = todoData.filter(item => item.done).length;
     const todoCount = todoData.length - doneCount;
+
+    const afterSearch = this.search(todoData, term);
+    const afterFilter = this.filter(afterSearch, filter);
 
     return (
       <div className="container">
         <AppHeader todo={todoCount} done={doneCount} />
         <div className="controls input-group">
-          <SearchPanel />
-          <ItemStatusFilter />
+          <SearchPanel onSearchChange={this.onSearchChange} />
+          <ItemStatusFilter
+            filter={filter}
+            onFilterItems={this.onFilterItems}
+          />
         </div>
         <TodoList
-          todos={todoData}
+          todos={afterFilter}
           onDeleted={this.onDeleted}
           onToggleDone={this.onToggleDone}
           onToggleImportant={this.onToggleImportant}

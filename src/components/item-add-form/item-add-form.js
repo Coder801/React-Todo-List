@@ -20,6 +20,9 @@ export default class ItemAddForm extends Component {
 
     if (label) {
       this.props.onItemAdded(this.state.label);
+      this.setState({
+        label: ""
+      });
     }
   };
 

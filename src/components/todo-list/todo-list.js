@@ -4,16 +4,18 @@ import PropTypes from "prop-types";
 import TodoListItem from "../todo-list-item/";
 
 const TodoList = ({ todos, onDeleted, onToggleDone, onToggleImportant }) => {
-  const elements = todos.map(({ key, ...props }) => (
-    <li className="list-group-item" key={key}>
-      <TodoListItem
-        {...props}
-        onDeleted={() => onDeleted(key)}
-        onToggleDone={() => onToggleDone(key)}
-        onToggleImportant={() => onToggleImportant(key)}
-      />
-    </li>
-  ));
+  const elements = todos.map(({ key, ...props }) => {
+    return (
+      <li className="list-group-item" key={key}>
+        <TodoListItem
+          {...props}
+          onDeleted={() => onDeleted(key)}
+          onToggleDone={() => onToggleDone(key)}
+          onToggleImportant={() => onToggleImportant(key)}
+        />
+      </li>
+    );
+  });
 
   return <ul className="list-group">{elements}</ul>;
 };
